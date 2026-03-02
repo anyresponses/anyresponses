@@ -1,0 +1,37 @@
+{
+  "name": "anyresponses",
+  "version": "0.0.3",
+  "description": "The Universal Gateway making every model speak the Open Responses standard.",
+  "main": "index.js",
+  "exports": {
+    ".": "./index.js"
+  },
+  "files": [
+    "index.js",
+    "src",
+    "reference",
+    "README.md"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "openai",
+    "responses",
+    "llm",
+    "gateway",
+    "ai",
+    "open-responses"
+  ],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.28.2",
+  "homepage": "https://www.anyresponses.com",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anyresponses/anyresponses.git"
+  },
+  "bugs": {
+    "url": "https://github.com/anyresponses/anyresponses/issues"
+  }
+}

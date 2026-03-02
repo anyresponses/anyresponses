@@ -1,0 +1,14 @@
+{
+  "name": "anyresponses-test",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Local test app for anyresponses",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "anyresponses": "link:../packages/core",
+    "dotenv": "^16.6.1"
+  }
+}

@@ -1,0 +1,424 @@
+{
+  "schema_version": 2,
+  "notes": [
+    "Model strings in requests must include the provider id prefix, for example \"openai/gpt-4.1\"."
+  ],
+  "providers": [
+    {
+      "id": "aliyun",
+      "key": "ALIYUN",
+      "name": "Alibaba Cloud DashScope",
+      "description": "Alibaba Cloud's LLM platform offering Qwen and other proprietary models plus a range of open-source and commercial models, with strong support for dialogue, long context, and multimodal use cases.",
+      "env_prefix": "ALIYUN",
+      "mode": "openai-chat",
+      "default_base_url": "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["ALIYUN_API_KEY"],
+        "optional": ["ALIYUN_BASE_URL"]
+      }
+    },
+    {
+      "id": "anthropic",
+      "key": "ANTHROPIC",
+      "name": "Anthropic",
+      "description": "Anthropic provides the Claude family of models with a focus on safety, reliability, and long context, for both enterprise and consumer applications.",
+      "env_prefix": "ANTHROPIC",
+      "mode": "anthropic-messages",
+      "default_base_url": "https://api.anthropic.com/v1/messages",
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl", "version"],
+      "env": {
+        "required": ["ANTHROPIC_API_KEY"],
+        "optional": ["ANTHROPIC_BASE_URL", "ANTHROPIC_VERSION"]
+      },
+      "notes": ["version defaults to 2023-06-01"]
+    },
+    {
+      "id": "atlascloud",
+      "key": "ATLASCLOUD",
+      "name": "Atlas Cloud",
+      "description": "Atlas Cloud offers a managed LLM gateway and unified access to multiple models from a single entry point for routing and management.",
+      "env_prefix": "ATLASCLOUD",
+      "mode": "openai-chat",
+      "default_base_url": "https://api.atlascloud.ai/v1/chat/completions",
+      "default_options": {
+        "provider": "atlascloud"
+      },
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["ATLASCLOUD_API_KEY"],
+        "optional": ["ATLASCLOUD_BASE_URL"]
+      }
+    },
+    {
+      "id": "bedrock",
+      "key": "BEDROCK",
+      "name": "AWS Bedrock",
+      "description": "Amazon's managed foundation model service aggregating models from Anthropic, Meta, Cohere and others, integrated with AWS identity and access controls.",
+      "env_prefix": "BEDROCK",
+      "mode": "bedrock-converse",
+      "default_base_url": "https://bedrock-runtime.{region}.amazonaws.com",
+      "default_region": "us-east-1",
+      "default_options": {
+        "provider": "bedrock"
+      },
+      "required_options": ["apiKey"],
+      "optional_options": ["region", "baseUrl"],
+      "env": {
+        "required": ["BEDROCK_API_KEY"],
+        "optional": ["BEDROCK_BASE_URL", "BEDROCK_REGION"]
+      },
+      "notes": ["region defaults to us-east-1; baseUrl can include {region}"]
+    },
+    {
+      "id": "deepinfra",
+      "key": "DEEPINFRA",
+      "name": "DeepInfra",
+      "description": "DeepInfra provides hosted inference for a wide set of open-source models including Llama, Mistral, and Qwen, with pay-as-you-go access.",
+      "env_prefix": "DEEPINFRA",
+      "mode": "openai-chat",
+      "default_base_url": "https://api.deepinfra.com/v1/openai/chat/completions",
+      "default_options": {
+        "provider": "deepinfra"
+      },
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["DEEPINFRA_API_KEY"],
+        "optional": ["DEEPINFRA_BASE_URL"]
+      }
+    },
+    {
+      "id": "deepseek",
+      "key": "DEEPSEEK",
+      "name": "DeepSeek",
+      "description": "DeepSeek offers its own models such as DeepSeek-V2 and DeepSeek-V3 with strong code and general capabilities, via official cloud inference.",
+      "env_prefix": "DEEPSEEK",
+      "mode": "openai-chat",
+      "default_base_url": "https://api.deepseek.com/v1/chat/completions",
+      "default_options": {
+        "provider": "deepseek"
+      },
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["DEEPSEEK_API_KEY"],
+        "optional": ["DEEPSEEK_BASE_URL"]
+      }
+    },
+    {
+      "id": "google",
+      "key": "GOOGLE",
+      "name": "Google Gemini",
+      "description": "Google's Gemini family of multimodal models delivered through AI Studio, supporting dialogue, reasoning, and multimodal input and output.",
+      "env_prefix": "GOOGLE",
+      "mode": "gemini",
+      "default_base_url": "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["GOOGLE_API_KEY"],
+        "optional": ["GOOGLE_BASE_URL"]
+      }
+    },
+    {
+      "id": "huggingface",
+      "key": "HUGGINGFACE",
+      "name": "Hugging Face",
+      "description": "Hugging Face's inference router aggregates open-source and partner models on the platform behind a single entry point for many models.",
+      "env_prefix": "HUGGINGFACE",
+      "mode": "openai-responses",
+      "default_base_url": "https://router.huggingface.co/v1/responses",
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["HUGGINGFACE_API_KEY"],
+        "optional": ["HUGGINGFACE_BASE_URL"],
+        "aliases": ["HF_TOKEN"]
+      },
+      "notes": ["HF_TOKEN can be used as apiKey when loading from env"]
+    },
+    {
+      "id": "hunyuan",
+      "key": "HUNYUAN",
+      "name": "Tencent Hunyuan",
+      "description": "Tencent's Hunyuan LLM platform offers proprietary dialogue, multimodal, and code capabilities for enterprises and developers.",
+      "env_prefix": "HUNYUAN",
+      "mode": "openai-chat",
+      "default_base_url": "https://api.hunyuan.cloud.tencent.com/v1/chat/completions",
+      "default_options": {
+        "provider": "hunyuan"
+      },
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["HUNYUAN_API_KEY"],
+        "optional": ["HUNYUAN_BASE_URL"]
+      }
+    },
+    {
+      "id": "minimax",
+      "key": "MINIMAX",
+      "name": "MiniMax",
+      "description": "MiniMax provides chat and voice-oriented models including text dialogue, speech synthesis and understanding for consumer and scenario-based applications.",
+      "env_prefix": "MINIMAX",
+      "mode": "openai-chat",
+      "default_base_url": "https://api.minimax.chat/v1/chat/completions",
+      "default_options": {
+        "provider": "minimax"
+      },
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["MINIMAX_API_KEY"],
+        "optional": ["MINIMAX_BASE_URL"]
+      }
+    },
+    {
+      "id": "mistral",
+      "key": "MISTRAL",
+      "name": "Mistral AI",
+      "description": "Mistral AI offers the Mistral and Mixtral model families with a focus on efficiency and multilingual capability; a leading European LLM provider.",
+      "env_prefix": "MISTRAL",
+      "mode": "openai-chat",
+      "default_base_url": "https://api.mistral.ai/v1/chat/completions",
+      "default_options": {
+        "provider": "mistral"
+      },
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["MISTRAL_API_KEY"],
+        "optional": ["MISTRAL_BASE_URL"]
+      }
+    },
+    {
+      "id": "moonshot",
+      "key": "MOONSHOT",
+      "name": "Moonshot AI",
+      "description": "Moonshot AI provides the Kimi family of models with emphasis on long context and dialogue, serving both domestic and international markets.",
+      "env_prefix": "MOONSHOT",
+      "mode": "openai-chat",
+      "default_base_url": "https://api.moonshot.cn/v1/chat/completions",
+      "default_options": {
+        "provider": "moonshot"
+      },
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["MOONSHOT_API_KEY"],
+        "optional": ["MOONSHOT_BASE_URL"]
+      }
+    },
+    {
+      "id": "novita",
+      "key": "NOVITA",
+      "name": "Novita AI",
+      "description": "Novita AI offers hosted inference across multiple open-source and commercial models from a single platform for easy switching and access.",
+      "env_prefix": "NOVITA",
+      "mode": "openai-chat",
+      "default_base_url": "https://api.novita.ai/openai/v1/chat/completions",
+      "default_options": {
+        "provider": "novita"
+      },
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["NOVITA_API_KEY"],
+        "optional": ["NOVITA_BASE_URL"]
+      }
+    },
+    {
+      "id": "openai",
+      "key": "OPENAI",
+      "name": "OpenAI Responses",
+      "description": "OpenAI's Responses product unifies text and tool-calling output for structured and multi-turn tool-use scenarios.",
+      "env_prefix": "OPENAI",
+      "mode": "openai-responses",
+      "default_base_url": "https://api.openai.com/v1/responses",
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["OPENAI_API_KEY"],
+        "optional": ["OPENAI_BASE_URL"]
+      }
+    },
+    {
+      "id": "openai-chat",
+      "key": "OPENAI_CHAT",
+      "name": "OpenAI Chat Completions",
+      "description": "OpenAI's chat completion product offering GPT-4, GPT-4o and related models for message-based dialogue and completion.",
+      "env_prefix": "OPENAI_CHAT",
+      "mode": "openai-chat",
+      "default_base_url": "https://api.openai.com/v1/chat/completions",
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["OPENAI_CHAT_API_KEY"],
+        "optional": ["OPENAI_CHAT_BASE_URL"]
+      }
+    },
+    {
+      "id": "openrouter",
+      "key": "OPENROUTER",
+      "name": "OpenRouter",
+      "description": "OpenRouter is a model routing and aggregation service giving unified access to OpenAI, Anthropic, Google and others with per-model billing.",
+      "env_prefix": "OPENROUTER",
+      "mode": "openai-chat",
+      "default_base_url": "https://openrouter.ai/api/v1/chat/completions",
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["OPENROUTER_API_KEY"],
+        "optional": ["OPENROUTER_BASE_URL"]
+      }
+    },
+    {
+      "id": "siliconflow",
+      "key": "SILICONFLOW",
+      "name": "SiliconFlow",
+      "description": "SiliconFlow provides hosted inference for popular open-source models with low-latency access from nodes aimed at developers and enterprises in the region.",
+      "env_prefix": "SILICONFLOW",
+      "mode": "openai-chat",
+      "default_base_url": "https://api.siliconflow.com/v1/chat/completions",
+      "default_options": {
+        "provider": "siliconflow"
+      },
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["SILICONFLOW_API_KEY"],
+        "optional": ["SILICONFLOW_BASE_URL"]
+      }
+    },
+    {
+      "id": "together",
+      "key": "TOGETHER",
+      "name": "Together AI",
+      "description": "Together AI hosts and serves a variety of open-source LLMs with high-performance inference and elastic scaling for cost-sensitive and customizable model use.",
+      "env_prefix": "TOGETHER",
+      "mode": "openai-chat",
+      "default_base_url": "https://api.together.xyz/v1/chat/completions",
+      "default_options": {
+        "provider": "together"
+      },
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["TOGETHER_API_KEY"],
+        "optional": ["TOGETHER_BASE_URL"]
+      }
+    },
+    {
+      "id": "vertex",
+      "key": "VERTEX",
+      "name": "Google Cloud Vertex AI",
+      "description": "Google Cloud Vertex AI delivers Gemini and other foundation models with enterprise features, GCP identity, VPC and audit integration for production use.",
+      "env_prefix": "VERTEX",
+      "mode": "vertex-gemini",
+      "default_base_url": "https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/{model}:generateContent",
+      "required_options": ["project", "location", "clientEmail", "privateKey"],
+      "optional_options": ["baseUrl", "scopes"],
+      "env": {
+        "required": ["VERTEX_PROJECT", "VERTEX_LOCATION"],
+        "optional": [
+          "VERTEX_CLIENT_EMAIL",
+          "VERTEX_PRIVATE_KEY",
+          "VERTEX_SCOPES",
+          "VERTEX_BASE_URL"
+        ]
+      },
+      "notes": ["privateKey can be passed with escaped newlines (\\\\n)"]
+    },
+    {
+      "id": "volcengine",
+      "key": "VOLCENGINE",
+      "name": "Volcengine Ark",
+      "description": "ByteDance's Volcengine Ark LLM platform offers proprietary models such as Doubao plus multimodal and agent capabilities for enterprises and developers.",
+      "env_prefix": "VOLCENGINE",
+      "mode": "openai-responses",
+      "default_base_url": "https://ark.cn-beijing.volces.com/api/v3/responses",
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["VOLCENGINE_API_KEY"],
+        "optional": ["VOLCENGINE_BASE_URL"]
+      }
+    },
+    {
+      "id": "x.ai",
+      "key": "XAI",
+      "name": "xAI",
+      "description": "xAI offers the Grok family of models with emphasis on real-time information and reasoning, deeply integrated with the X platform.",
+      "env_prefix": "XAI",
+      "mode": "openai-responses",
+      "default_base_url": "https://api.x.ai/v1/responses",
+      "default_options": {
+        "provider": "x.ai"
+      },
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["XAI_API_KEY"],
+        "optional": ["XAI_BASE_URL"]
+      }
+    },
+    {
+      "id": "xiaomimimo",
+      "key": "XIAOMIMIMO",
+      "name": "Xiaomi MiMo",
+      "description": "Xiaomi's MiMo LLM platform provides proprietary dialogue and multimodal capabilities for the Xiaomi ecosystem and third-party applications.",
+      "env_prefix": "XIAOMIMIMO",
+      "mode": "openai-chat",
+      "default_base_url": "https://api.xiaomimimo.com/v1/chat/completions",
+      "default_options": {
+        "provider": "xiaomimimo"
+      },
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["XIAOMIMIMO_API_KEY"],
+        "optional": ["XIAOMIMIMO_BASE_URL"]
+      }
+    },
+    {
+      "id": "z.ai",
+      "key": "ZAI",
+      "name": "Z.ai",
+      "description": "Z.ai is Zhipu AI's international brand and platform, offering GLM and related models from global nodes for developers outside the domestic market.",
+      "env_prefix": "ZAI",
+      "mode": "openai-chat",
+      "default_base_url": "https://api.z.ai/api/paas/v4/chat/completions",
+      "default_options": {
+        "provider": "z.ai"
+      },
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["ZAI_API_KEY"],
+        "optional": ["ZAI_BASE_URL"]
+      }
+    },
+    {
+      "id": "zhipuai",
+      "key": "ZHIPUAI",
+      "name": "Zhipu AI",
+      "description": "Zhipu AI provides the GLM family of models covering dialogue, code, and multimodal use cases; a leading LLM provider in the region.",
+      "env_prefix": "ZHIPUAI",
+      "mode": "openai-chat",
+      "default_base_url": "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+      "default_options": {
+        "provider": "zhipuai"
+      },
+      "required_options": ["apiKey"],
+      "optional_options": ["baseUrl"],
+      "env": {
+        "required": ["ZHIPUAI_API_KEY"],
+        "optional": ["ZHIPUAI_BASE_URL"]
+      }
+    }
+  ]
+}

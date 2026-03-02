@@ -1,0 +1,72 @@
+{
+  "name": "anyresponses-gateway",
+  "main": "src/index.js",
+  "compatibility_date": "2024-11-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "vars": {
+    // ANTHROPIC_API_KEY: "",
+    // ANTHROPIC_BASE_URL: "https://api.anthropic.com/v1/messages",
+    // ANTHROPIC_VERSION: "2023-06-01",
+    // OPENAI_API_KEY: "",
+    // OPENAI_BASE_URL: "https://api.openai.com/v1/responses",
+    // OPENAI_CHAT_API_KEY: "",
+    // OPENAI_CHAT_BASE_URL: "https://api.openai.com/v1/chat/completions",
+    // DEEPSEEK_API_KEY: "",
+    // DEEPSEEK_BASE_URL: "https://api.deepseek.com/v1/chat/completions",
+    // VOLCENGINE_API_KEY: "",
+    // VOLCENGINE_BASE_URL: "https://ark.cn-beijing.volces.com/api/v3/responses",
+    // HUNYUAN_API_KEY: "",
+    // HUNYUAN_BASE_URL: "https://api.hunyuan.cloud.tencent.com/v1/chat/completions",
+    // ALIYUN_API_KEY: "",
+    // ALIYUN_BASE_URL: "https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions",
+    // MINIMAX_API_KEY: "",
+    // MINIMAX_BASE_URL: "https://api.minimax.chat/v1/chat/completions",
+    // MOONSHOT_API_KEY: "",
+    // MOONSHOT_BASE_URL: "https://api.moonshot.cn/v1/chat/completions",
+    // BEDROCK_API_KEY: "",
+    // BEDROCK_BASE_URL: "https://bedrock-runtime.{region}.amazonaws.com",
+    // BEDROCK_REGION: "us-east-1",
+    // GEMINI_API_KEY: "",
+    // GEMINI_BASE_URL: "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent",
+    // ZAI_API_KEY: "",
+    // ZAI_BASE_URL: "https://api.z.ai/api/paas/v4/chat/completions",
+    // ZHIPUAI_API_KEY: "",
+    // ZHIPUAI_BASE_URL: "https://open.bigmodel.cn/api/paas/v4/chat/completions",
+    // TOGETHER_API_KEY: "",
+    // TOGETHER_BASE_URL: "https://api.together.xyz/v1/chat/completions",
+    // SILICONFLOW_API_KEY: "",
+    // SILICONFLOW_BASE_URL: "https://api.siliconflow.com/v1/chat/completions",
+    // XIAOMIMIMO_API_KEY: "",
+    // XIAOMIMIMO_BASE_URL: "https://api.xiaomimimo.com/v1/chat/completions",
+    // DEEPINFRA_API_KEY: "",
+    // DEEPINFRA_BASE_URL: "https://api.deepinfra.com/v1/openai/chat/completions",
+    // XAI_API_KEY: "",
+    // XAI_BASE_URL: "https://api.x.ai/v1/responses",
+    // NOVITA_API_KEY: "",
+    // NOVITA_BASE_URL: "https://api.novita.ai/openai/v1/chat/completions",
+    // ATLASCLOUD_API_KEY: "",
+    // ATLASCLOUD_BASE_URL: "https://api.atlascloud.ai/v1/chat/completions",
+    // VERTEX_CLIENT_EMAIL: "",
+    // VERTEX_PRIVATE_KEY: "",
+    // VERTEX_PROJECT: "",
+    // VERTEX_LOCATION: "us-central1",
+    // VERTEX_BASE_URL: "https://{location}-aiplatform.googleapis.com/v1/projects/{project}/locations/{location}/publishers/google/models/{model}:generateContent",
+    // BYOK_ENCRYPTION_KEY: ""
+  },
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true
+    }
+  },
+  "d1_databases": [
+    {
+      "binding": "MY_DB",
+      "database_name": "anyresponses",
+      "database_id": "cf18f68c-9900-4ab9-91d4-b431a94c63ff"
+    }
+  ],
+  "analytics_engine_datasets": [
+    { "binding": "USAGE_ANALYTICS_ENGINE", "dataset": "anyresponses" }
+  ]
+}
