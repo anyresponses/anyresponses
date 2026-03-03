@@ -38,7 +38,7 @@ const response = await client.responses.create({
   input: [{ type: "message", role: "user", content: "Hello" }],
 });
 
-console.log(JSON.stringify(response, null, 2));
+console.log(response);
 ```
 
 ## First request (official gateway key)
@@ -56,7 +56,7 @@ const response = await client.responses.create({
   input: [{ type: "message", role: "user", content: "Hello" }],
 });
 
-console.log(JSON.stringify(response, null, 2));
+console.log(response);
 ```
 
 ## First request (gateway BYOK)
@@ -75,7 +75,7 @@ const response = await client.responses.create({
   input: [{ type: "message", role: "user", content: "Hello" }],
 });
 
-console.log(JSON.stringify(response, null, 2));
+console.log(response);
 ```
 
 ## Read the output
@@ -83,7 +83,7 @@ All providers are normalized into the Open Responses response shape, so you can
 inspect the full response object directly.
 
 ```javascript
-console.log(JSON.stringify(response, null, 2));
+console.log(response);
 ```
 
 ## Next steps

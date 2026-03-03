@@ -7,7 +7,7 @@ const response = await client.responses.create({
   input: "Summarize this",
 });
 
-console.log(JSON.stringify(response, null, 2));
+console.log(response);
 ```
 
 ## Routing and model ids

@@ -143,7 +143,7 @@ const response = await client.responses.create({
   input: "Hello",
 });
 
-console.log(JSON.stringify(response, null, 2));
+console.log(response);
 ```
 
 ## Errors and routing

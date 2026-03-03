@@ -25,7 +25,7 @@ const response = await client.responses.create({
   input: [{ type: "message", role: "user", content: "Hello" }],
 });
 
-console.log(JSON.stringify(response, null, 2));
+console.log(response);
 ```
 
 ## Same flow as the official gateway
