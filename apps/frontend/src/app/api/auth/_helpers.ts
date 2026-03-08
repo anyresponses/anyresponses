@@ -12,6 +12,14 @@ type CloudflareEnv = {
   BYOK_ENCRYPTION_KEY?: string;
   STRIPE_SECRET_KEY?: string;
   STRIPE_WEBHOOK_SECRET?: string;
+  WECHAT_PAY_APP_ID?: string;
+  WECHAT_PAY_MCH_ID?: string;
+  WECHAT_PAY_MCH_SERIAL_NO?: string;
+  WECHAT_PAY_PRIVATE_KEY?: string;
+  WECHAT_PAY_NOTIFY_URL?: string;
+  WECHAT_API_KEY_V3?: string;
+  WECHAT_PAY_PLATFORM_PUBLIC_KEY?: string;
+  WECHAT_PAY_PLATFORM_SERIAL?: string;
 };
 
 const encoder = new TextEncoder();

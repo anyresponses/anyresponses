@@ -21,6 +21,7 @@ type CreditsResponse = {
 };
 
 type LoadState = "loading" | "ready" | "unauth";
+type PaymentMethod = "wechat" | "stripe";
 
 const normalizeCurrency = (currency?: string) => {
   const upper = currency?.toUpperCase();
@@ -76,7 +77,11 @@ export default function CreditsPage() {
   const [rechargeAmount, setRechargeAmount] = useState("100");
   const [rechargeError, setRechargeError] = useState<string | null>(null);
   const [rechargeLoading, setRechargeLoading] = useState(false);
+  const [rechargeCodeUrl, setRechargeCodeUrl] = useState<string | null>(null);
+  const [rechargeOrderId, setRechargeOrderId] = useState<string | null>(null);
+  const [rechargeMethod, setRechargeMethod] = useState<PaymentMethod>("wechat");
   const feeRate = 0.08;
+  const usdToCnyRate = 7;
   const minAmount = 1;
   const pageSize = 10;
   const [page, setPage] = useState(0);
@@ -142,7 +147,7 @@ export default function CreditsPage() {
       const response = await fetch("/api/credits/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ amount, currency: "USD" }),
+        body: JSON.stringify({ amount, paymentMethod: rechargeMethod }),
       });
       if (response.status === 401) {
         window.location.href = "/auth";
@@ -155,12 +160,25 @@ export default function CreditsPage() {
         setRechargeError(payload.error ?? "Failed to start checkout.");
         return;
       }
-      const data = (await response.json().catch(() => ({}))) as { url?: string };
-      if (data.url) {
+      const data = (await response.json().catch(() => ({}))) as {
+        codeUrl?: string;
+        orderId?: string;
+        url?: string;
+      };
+      if (rechargeMethod === "stripe" && data.url) {
         window.location.href = data.url;
         return;
       }
-      setRechargeError("Stripe did not return a checkout URL.");
+      if (data.codeUrl && data.orderId) {
+        setRechargeCodeUrl(data.codeUrl);
+        setRechargeOrderId(data.orderId);
+        return;
+      }
+      setRechargeError(
+        rechargeMethod === "stripe"
+          ? "Stripe did not return a checkout URL."
+          : "WeChat Pay did not return a QR code."
+      );
     } catch {
       setRechargeError("Failed to start checkout.");
     } finally {
@@ -188,6 +206,73 @@ export default function CreditsPage() {
   const amountCents = parseDecimalAmount(rechargeAmount) ?? 0;
   const feeCents = Math.round(amountCents * feeRate);
   const totalCents = amountCents + feeCents;
+  const payableCnyFen = totalCents * usdToCnyRate;
+
+  const formatFen = (fen: number) => {
+    const whole = Math.floor(Math.abs(fen) / 100);
+    const fraction = String(Math.abs(fen) % 100).padStart(2, "0");
+    const sign = fen < 0 ? "-" : "";
+    return formatCurrency(`${sign}${whole}.${fraction}`, "CNY");
+  };
+
+  const closeRecharge = () => {
+    setRechargeOpen(false);
+    setRechargeCodeUrl(null);
+    setRechargeOrderId(null);
+    setRechargeError(null);
+    setRechargeLoading(false);
+  };
+
+  useEffect(() => {
+    setRechargeCodeUrl(null);
+    setRechargeOrderId(null);
+    setRechargeError(null);
+    setRechargeLoading(false);
+  }, [rechargeMethod]);
+
+  useEffect(() => {
+    if (!rechargeOpen || !rechargeOrderId || rechargeMethod !== "wechat") {
+      return;
+    }
+    let stopped = false;
+    const timer = setInterval(async () => {
+      if (stopped) {
+        return;
+      }
+      try {
+        const response = await fetch(
+          `/api/credits/checkout?orderId=${encodeURIComponent(rechargeOrderId)}`,
+          { cache: "no-store" }
+        );
+        if (!response.ok) {
+          return;
+        }
+        const data = (await response.json().catch(() => ({}))) as {
+          status?: string;
+        };
+        if (data.status === "completed") {
+          stopped = true;
+          clearInterval(timer);
+          closeRecharge();
+          loadCredits();
+          return;
+        }
+        if (data.status === "failed") {
+          stopped = true;
+          clearInterval(timer);
+          setRechargeError("Payment failed or was closed. Please try again.");
+          setRechargeCodeUrl(null);
+          setRechargeOrderId(null);
+        }
+      } catch {
+        // Keep polling on transient errors.
+      }
+    }, 2500);
+    return () => {
+      stopped = true;
+      clearInterval(timer);
+    };
+  }, [rechargeOpen, rechargeOrderId, rechargeMethod]);
 
   return (
     <div className="page dashboard credits-page">
@@ -318,17 +403,36 @@ export default function CreditsPage() {
             <div className="credits-recharge-header">
               <div>
                 <h3>Recharge credits</h3>
-                <p>Top up your balance securely with Stripe.</p>
+                <p>Choose Stripe or WeChat Pay.</p>
               </div>
               <button
                 className="btn btn-ghost"
                 type="button"
-                onClick={() => setRechargeOpen(false)}
+                onClick={closeRecharge}
               >
                 Close
               </button>
             </div>
             <div className="credits-recharge-body">
+              <div className="field">
+                <label>Payment method</label>
+                <div className="credits-methods">
+                  <button
+                    className={`btn ${rechargeMethod === "wechat" ? "btn-primary" : "btn-ghost"}`}
+                    type="button"
+                    onClick={() => setRechargeMethod("wechat")}
+                  >
+                    WeChat Pay
+                  </button>
+                  <button
+                    className={`btn ${rechargeMethod === "stripe" ? "btn-primary" : "btn-ghost"}`}
+                    type="button"
+                    onClick={() => setRechargeMethod("stripe")}
+                  >
+                    Stripe
+                  </button>
+                </div>
+              </div>
               <div className="field">
                 <label htmlFor="credits-recharge-amount">
                   Recharge amount (USD)
@@ -353,15 +457,46 @@ export default function CreditsPage() {
                   <span>Total charge</span>
                   <strong>{formatCents(totalCents)}</strong>
                 </div>
+                {rechargeMethod === "wechat" ? (
+                  <div>
+                    <span>Exchange rate</span>
+                    <strong>1 USD = {usdToCnyRate} CNY</strong>
+                  </div>
+                ) : null}
+                {rechargeMethod === "wechat" ? (
+                  <div>
+                    <span>Payable (CNY)</span>
+                    <strong>{formatFen(payableCnyFen)}</strong>
+                  </div>
+                ) : null}
               </div>
+              {rechargeMethod === "wechat" && rechargeCodeUrl ? (
+                <div className="credits-recharge-qr">
+                  <img
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=240x240&data=${encodeURIComponent(rechargeCodeUrl)}`}
+                    alt="WeChat Pay QR code"
+                    width={240}
+                    height={240}
+                  />
+                  <span className="credits-recharge-note">
+                    Open WeChat and scan to pay.
+                  </span>
+                </div>
+              ) : null}
               {rechargeError ? <span className="dash-error">{rechargeError}</span> : null}
               <button
                 className="btn btn-primary"
                 type="button"
                 onClick={() => startCheckout(rechargeAmount)}
-                disabled={rechargeLoading}
+                disabled={rechargeLoading || Boolean(rechargeCodeUrl)}
               >
-                {rechargeLoading ? "Redirecting..." : "Continue to Stripe"}
+                {rechargeLoading
+                  ? "Creating order..."
+                  : rechargeMethod === "wechat" && rechargeCodeUrl
+                    ? "Waiting for payment..."
+                    : rechargeMethod === "stripe"
+                      ? "Continue to Stripe"
+                      : "Generate WeChat QR"}
               </button>
             </div>
           </div>

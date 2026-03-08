@@ -1702,6 +1702,12 @@ pre.hero-code code {
   gap: 16px;
 }
 
+.credits-methods {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
 .credits-recharge-summary {
   display: grid;
   gap: 12px;
@@ -1723,6 +1729,24 @@ pre.hero-code code {
 .credits-recharge-summary strong {
   color: var(--text);
   font-weight: 600;
+}
+
+.credits-recharge-qr {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: rgba(248, 250, 255, 0.8);
+}
+
+.credits-recharge-qr img {
+  width: 240px;
+  height: 240px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid var(--border);
 }
 
 .credits-recharge-note {
